@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soporte Técnico Informático | Profesional y de Confianza</title>
+    <style>
+        :root {
+            --primary: #1a365d;
+            --secondary: #2b6cb0;
+            --text: #2d3748;
+            --bg: #f7fafc;
+            --white: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 20px 10px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--white);
+            padding: 30px 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 3px solid var(--secondary);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 24px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .subtitle {
+            color: var(--secondary);
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+
+        .intro {
+            text-align: center;
+            font-size: 15px;
+            color: #4a5568;
+            margin-bottom: 25px;
+        }
+
+        h2 {
+            color: var(--primary);
+            font-size: 18px;
+            margin: 25px 0 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .services-list li {
+            background: #edf2f7;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .services-list li strong {
+            color: var(--primary);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* --- NUEVA SECCIÓN DE PRESUPUESTOS --- */
+        .budget-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .budget-card {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .budget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .budget-title {
+            font-weight: bold;
+            color: var(--primary);
+            font-size: 16px;
+        }
+
+        .budget-tag {
+            font-size: 11px;
+            background: #e2e8f0;
+            color: #4a5568;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .budget-tag.featured {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .budget-desc {
+            font-size: 13.5px;
+            color: #4a5568;
+        }
+
+        /* --- NUEVA SECCIÓN DE IMÁGENES / GALERÍA --- */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin: 15px 0 25px 0;
+        }
+
+        .gallery-item {
+            background: #edf2f7;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover; /* Hace que la imagen encaje perfecta sin deformarse */
+            display: block;
+        }
+
+        .gallery-caption {
+            font-size: 12px;
+            text-align: center;
+            padding: 6px;
+            color: var(--primary);
+            font-weight: 600;
+            background: #fff;
+        }
+
+        .compromiso-list li {
+            background: #fff;
+            border-left: 4px solid #4a5568;
+            padding: 8px 12px;
+        }
+
+        .footer-info {
+            margin-top: 30px;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .info-item {
+            font-size: 14px;
+        }
+
+        .info-item strong {
+            color: var(--primary);
+        }
+
+        .cta-button {
+            display: block;
+            text-align: center;
+            background: #25d366; /* Color WhatsApp */
+            color: white;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: background 0.3s;
+        }
+
+        .cta-button:hover {
+            background: #128c7e;
+        }
+
+        @media (min-width: 480px) {
+            body { padding: 40px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Soporte Técnico Informático</h1>
+            <div class="subtitle">Servicio Especializado y de Confianza</div>
+        </header>
+
+        <p class="intro">
+            Optimiza el rendimiento y prolonga la vida útil de tus equipos. Me encargo personalmente de cuidar tus dispositivos con un servicio técnico transparente, rápido y sin intermediarios.
+        </p>
+
+        <h2>🛠️ ¿En qué te puedo ayudar?</h2>
+        <ul class="services-list">
+            <li>
+                <strong>Montaje y Presupuestos a Medida</strong>
+                Diseño y configuro tu ordenador ideal (para Gaming u Oficina), adaptándome rigurosamente a tu presupuesto y necesidades.
+            </li>
+            <li>
+                <strong>Mantenimiento de Hardware</strong>
+                Realizo limpieza técnica profunda y cambio de pasta térmica de alta gama en ordenadores y consolas (PS4, PS5, Xbox, Switch) para eliminar ruidos y evitar averías.
+            </li>
+            <li>
+                <strong>Soporte de Software</strong>
+                Me ocupo de formateos, instalación de sistemas operativos, eliminación de virus y actualización de componentes (SSD y RAM) para que tu equipo vuelva a volar.
+            </li>
+        </ul>
+
+        <h2>📋 Opciones de Presupuesto para PCs</h2>
+        <div class="budget-container">
+            <div class="budget-card">
+                <div class="budget-header">
+                    <span class="budget-title">💻 Económico / Oficina</span>
+                    <span class="budget-tag">Básico</span>
+                </div>
+                <p class="budget-desc">Optimizado para tareas diarias, estudios, teletrabajo y navegación fluida. Componentes fiables al menor coste posible.</p>
+            </div>
+            
+            <div class="budget-card">
+                <div class="budget-header">
+                    <span class="budget-title">🎮 Calidad-Precio / Gaming</span>
+                    <span class="budget-tag featured">El más buscado</span>
+                </div>
+                <p class="budget-desc">El equilibrio perfecto para jugar a gran rendimiento o trabajar con programas exigentes sin gastar de más. Componentes duraderos y escalables.</p>
+            </div>
+
+            <div class="budget-card">
+                <div class="budget-header">
+                    <span class="budget-title">🚀 Alto Rendimiento / Premium</span>
+                    <span class="budget-tag">Máxima Potencia</span>
+                </div>
+                <p class="budget-desc">Para quienes buscan lo mejor. Perfecto para gaming competitivo en alta resolución, streaming o tareas profesionales pesadas.</p>
+            </div>
+        </div>
+
+        <h2>🔹 Mi compromiso contigo</h2>
+        <ul class="compromiso-list">
+            <li>✓ Presupuestos claros y diagnóstico previo sin compromiso.</li>
+            <li>✓ Uso exclusivo de materiales y herramientas de calidad profesional.</li>
+            <li>✓ Trato directo, rapidez en la entrega y total confidencialidad.</li>
+        </ul>
+
+        <div class="footer-info">
+            <div class="info-item"><strong>📞 Teléfono / WhatsApp:</strong> 689 94 43 08</div>
+             <div class="info-item"><strong>📧 Correo:</strong> <a href="mailto:alejandroruizinstituto@gmail.com" style="color: var(--secondary); text-decoration: none;">alejandroruizinstituto@gmail.com</a></div>
+            <div class="info-item"><strong>🕒 Horario de Atención:</strong> Lunes a Viernes: 9:00 - 14:00 y 16:00 - 20:00</div>
+            
+            <a href="https://wa.me/34689944308" class="cta-button" target="_blank">💬 Contactar por WhatsApp</a>
+        </div>
+    </div>
+
+</body>
+</html>
