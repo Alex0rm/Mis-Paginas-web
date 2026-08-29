@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#090d16">
+  <title>TITAN FITNESS - Entrenador Personal</title>
+
+  <style>
+    :root {
+      --bg: #090d16;
+      --surface: #131b2e;
+      --card: #1e293b;
+      --border: #334155;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --work: #10b981;
+      --rest: #f59e0b;
+      --accent: #3b82f6;
+      --danger: #ef4444;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+    body { background-color: var(--bg); color: var(--text); padding: 14px; display: flex; justify-content: center; }
+    .app-container { width: 100%; max-width: 460px; display: flex; flex-direction: column; gap: 14px; }
+
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 18px; width: 100%; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+
+    /* CABECERA CON LOGO PROFESIONAL */
+    .brand-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 6px 0 16px 0;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.4);
+      margin-bottom: 16px;
+    }
+    .brand-svg {
+      width: 48px;
+      height: 48px;
+      filter: drop-shadow(0 4px 10px rgba(16, 185, 129, 0.35));
+    }
+    .brand-text { display: flex; flex-direction: column; text-align: left; }
+    .brand-name { font-size: 1.35rem; font-weight: 900; letter-spacing: 0.5px; line-height: 1.1; color: #fff; }
+    .brand-sub { font-size: 0.72rem; color: #10b981; text-transform: uppercase; font-weight: 700; letter-spacing: 1.2px; }
+
+    h2 { font-size: 1.15rem; margin-bottom: 12px; color: var(--text); display: flex; justify-content: space-between; align-items: center; }
+
+    /* Panel de Voz Local */
+    .voice-setting-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+    }
+    .voice-setting-box label { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; font-weight: bold; }
+    .voice-control-row { display: flex; gap: 8px; width: 100%; }
+    select {
+      flex: 1 1 auto;
+      min-width: 0;
+      background: #0f172a;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 10px 8px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      outline: none;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .btn-test {
+      flex-shrink: 0;
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 0 16px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    /* HUB / Pantalla Principal */
+    .hub-routine-item { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 14px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 10px; }
+    .routine-header { display: flex; justify-content: space-between; align-items: center; }
+    .routine-title { font-size: 1.15rem; font-weight: bold; color: var(--text); }
+    .routine-summary { font-size: 0.82rem; color: var(--muted); }
+    .hub-btn-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 8px; }
+    .btn-hub-start { background: var(--work); color: #000; border: none; padding: 11px; border-radius: 9px; font-weight: 800; font-size: 1rem; cursor: pointer; }
+    .btn-hub-edit { background: #334155; color: white; border: none; padding: 11px; border-radius: 9px; font-weight: bold; cursor: pointer; }
+
+    /* Botones generales */
+    .btn-small { background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 8px 12px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+    .btn-secondary { background: #334155; color: white; border: none; padding: 12px; border-radius: 9px; font-weight: bold; width: 100%; cursor: pointer; }
+    .btn-accent { background: var(--accent); color: white; border: none; padding: 14px; border-radius: 11px; font-size: 1.05rem; font-weight: bold; cursor: pointer; width: 100%; }
+
+    /* Controles de Configuración (+ / -) */
+    .grid-params { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+    .param-box { background: var(--card); border-radius: 10px; padding: 10px; text-align: center; border: 1px solid var(--border); }
+    .param-title { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; margin-bottom: 4px; }
+    .param-val { font-size: 1.4rem; font-weight: bold; margin-bottom: 6px; }
+    .btn-group { display: flex; justify-content: center; gap: 6px; }
+    .btn-adj { background: #334155; border: none; color: #fff; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; font-weight: bold; }
+    .btn-adj:active { background: var(--accent); }
+
+    /* Lista de Ejercicios Reordenables */
+    .exercise-list { display: flex; flex-direction: column; gap: 8px; max-height: 260px; overflow-y: auto; margin-bottom: 12px; padding-right: 4px; }
+    .exercise-item { display: flex; align-items: center; justify-content: space-between; background: var(--card); padding: 8px 10px; border-radius: 8px; border: 1px solid var(--border); gap: 8px; }
+    .exercise-name { font-weight: 500; font-size: 0.95rem; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    .exercise-actions { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+    .btn-move { background: #334155; border: none; color: #f8fafc; width: 28px; height: 28px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+    .btn-move:disabled { opacity: 0.25; cursor: default; }
+    .btn-del { background: transparent; border: none; color: var(--danger); font-size: 1.3rem; cursor: pointer; padding: 0 4px; display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; }
+
+    .add-box { display: flex; gap: 8px; margin-bottom: 14px; }
+    .add-box input { flex: 1; min-width: 0; background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 10px; border-radius: 8px; font-size: 0.95rem; }
+    .btn-add { background: var(--accent); border: none; color: white; padding: 0 16px; border-radius: 8px; font-weight: bold; cursor: pointer; flex-shrink: 0; }
+
+    /* Pantalla Activa de Entreno */
+    .info-strip { display: flex; justify-content: space-between; color: var(--muted); font-size: 0.9rem; margin-bottom: 15px; }
+    .big-exercise { font-size: 2rem; font-weight: 800; min-height: 2.4em; display: flex; align-items: center; justify-content: center; line-height: 1.2; text-align: center; }
+    .clock-face { font-size: 6.5rem; font-weight: 900; font-variant-numeric: tabular-nums; margin: 10px 0; text-align: center; }
+    .status-work { color: var(--work); }
+    .status-rest { color: var(--rest); }
+    .btn-danger { background: var(--danger); color: white; border: none; padding: 12px; border-radius: 9px; font-weight: bold; width: 100%; cursor: pointer; margin-top: 10px; }
+
+    /* Modal emergente */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.75);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      width: 100%;
+      max-width: 360px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .modal-box h3 { font-size: 1.15rem; color: var(--text); }
+    .modal-box input {
+      width: 100%;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    .modal-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 4px; }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+
+    <!-- 1. HUB / PANTALLA PRINCIPAL -->
+    <div id="hub-view" class="card">
+      <div class="brand-header">
+        <svg class="brand-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="g1" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#10b981"/>
+              <stop offset="100%" stop-color="#3b82f6"/>
+            </linearGradient>
+            <linearGradient id="g2" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#1e293b"/>
+              <stop offset="100%" stop-color="#090d16"/>
+            </linearGradient>
+          </defs>
+          <polygon points="50,4 92,26 92,74 50,96 8,74 8,26" fill="url(#g2)" stroke="url(#g1)" stroke-width="4"/>
+          <circle cx="50" cy="50" r="32" stroke="#334155" stroke-width="3" stroke-dasharray="6 4"/>
+          <path d="M 50 18 A 32 32 0 0 1 82 50" stroke="#10b981" stroke-width="4" stroke-linecap="round"/>
+          <rect x="45" y="11" width="10" height="6" rx="2" fill="#10b981"/>
+          <g transform="translate(50, 50) rotate(-40)">
+            <rect x="-18" y="-3" width="36" height="6" rx="2" fill="#f8fafc"/>
+            <rect x="-24" y="-12" width="6" height="24" rx="2" fill="#10b981"/>
+            <rect x="-28" y="-8" width="4" height="16" rx="1.5" fill="#3b82f6"/>
+            <rect x="18" y="-12" width="6" height="24" rx="2" fill="#10b981"/>
+            <rect x="24" y="-8" width="4" height="16" rx="1.5" fill="#3b82f6"/>
+          </g>
+        </svg>
+        <div class="brand-text">
+          <div class="brand-name">TITAN TIMER</div>
+          <div class="brand-sub">Entrenador Personal Pro</div>
+        </div>
+      </div>
+
+      <!-- Selector de Voz Local -->
+      <div class="voice-setting-box">
+        <label>Voz del Locutor (Local)</label>
+        <div class="voice-control-row">
+          <select id="voice-select" onchange="changeVoice()"></select>
+          <button class="btn-test" onclick="testVoice()">Probar</button>
+        </div>
+      </div>
+
+      <div id="hub-list"></div>
+      <button class="btn-accent" onclick="openNewRoutineModal()">+ Crear Nueva Rutina</button>
+    </div>
+
+    <!-- 2. PANTALLA DE EDICIÓN -->
+    <div id="setup-view" class="card" style="display: none;">
+      <h2>
+        <span id="setup-title">Editar Rutina</span>
+        <button class="btn-small" style="color: var(--danger);" onclick="deleteCurrentRoutine()">Eliminar</button>
+      </h2>
+
+      <div class="grid-params">
+        <div class="param-box">
+          <div class="param-title">Trabajo</div>
+          <div class="param-val" id="val-work">40s</div>
+          <div class="btn-group">
+            <button class="btn-adj" onclick="adjParam('work', -5)">-5s</button>
+            <button class="btn-adj" onclick="adjParam('work', 5)">+5s</button>
+          </div>
+        </div>
+        <div class="param-box">
+          <div class="param-title">Descanso</div>
+          <div class="param-val" id="val-rest">20s</div>
+          <div class="btn-group">
+            <button class="btn-adj" onclick="adjParam('rest', -5)">-5s</button>
+            <button class="btn-adj" onclick="adjParam('rest', 5)">+5s</button>
+          </div>
+        </div>
+        <div class="param-box">
+          <div class="param-title">Rondas</div>
+          <div class="param-val" id="val-rounds">3</div>
+          <div class="btn-group">
+            <button class="btn-adj" onclick="adjParam('rounds', -1)">-1</button>
+            <button class="btn-adj" onclick="adjParam('rounds', 1)">+1</button>
+          </div>
+        </div>
+        <div class="param-box">
+          <div class="param-title">Pausa Ronda</div>
+          <div class="param-val" id="val-round-rest">90s</div>
+          <div class="btn-group">
+            <button class="btn-adj" onclick="adjParam('roundRest', -10)">-10s</button>
+            <button class="btn-adj" onclick="adjParam('roundRest', 10)">+10s</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="param-title" style="margin-bottom: 6px;">Ejercicios incluidos (organiza el orden):</div>
+      <div class="exercise-list" id="exercise-list"></div>
+
+      <div class="add-box">
+        <input type="text" id="new-exercise-name" placeholder="Añadir ejercicio..." onkeydown="if(event.key==='Enter') addExercise()">
+        <button class="btn-add" onclick="addExercise()">Añadir</button>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <button class="btn-hub-start" style="padding: 14px;" onclick="startWorkout()">▶ Empezar Entreno</button>
+        <button class="btn-secondary" onclick="showHub()">← Volver al Menú</button>
+      </div>
+    </div>
+
+    <!-- 3. PANTALLA ACTIVA DE ENTRENO -->
+    <div id="active-view" class="card" style="display: none;">
+      <div class="info-strip">
+        <span id="label-round">Ronda: 1 / 3</span>
+        <span id="label-next">Luego: -</span>
+      </div>
+
+      <div id="display-name" class="big-exercise status-work">Flexiones</div>
+      <div id="display-time" class="clock-face status-work">40</div>
+
+      <button class="btn-danger" onclick="stopWorkout()">Parar y Volver al Menú</button>
+    </div>
+
+  </div>
+
+  <!-- MODAL NUEVA RUTINA -->
+  <div id="modal-new-routine" class="modal-overlay">
+    <div class="modal-box">
+      <h3>Nueva Rutina</h3>
+      <input type="text" id="input-routine-name" placeholder="Nombre (ej: Pierna, Core...)">
+      <div class="modal-actions">
+        <button class="btn-secondary" onclick="closeNewRoutineModal()">Cancelar</button>
+        <button class="btn-add" onclick="confirmNewRoutine()">Crear</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const defaultData = {
+      selected: "Fuerza A",
+      selectedVoiceURI: "",
+      routines: {
+        "Fuerza A": {
+          work: 40, rest: 20, rounds: 3, roundRest: 90,
+          exercises: ["Flexiones", "Sentadillas", "Superman", "Fondos en silla", "Zancadas alternas", "Plancha frontal"]
+        }
+      }
+    };
+
+    let appData = JSON.parse(localStorage.getItem('workout_hub_data')) || defaultData;
+    let timer = null;
+    let wakeLock = null;
+    let currentStep = { round: 1, idx: 0, isWork: true, timeLeft: 0 };
+    let availableVoices = [];
+
+    function saveData() {
+      localStorage.setItem('workout_hub_data', JSON.stringify(appData));
+    }
+
+    function getCurrentRoutine() {
+      return appData.routines[appData.selected] || Object.values(appData.routines)[0];
+    }
+
+    function loadVoices() {
+      if (!('speechSynthesis' in window)) return;
+      availableVoices = window.speechSynthesis.getVoices();
+
+      const select = document.getElementById('voice-select');
+      select.innerHTML = '';
+
+      const esVoices = availableVoices.filter(v => v.lang.startsWith('es'));
+      const otherVoices = availableVoices.filter(v => !v.lang.startsWith('es'));
+      const voiceList = [...esVoices, ...otherVoices];
+
+      if (voiceList.length === 0) {
+        const opt = document.createElement('option');
+        opt.textContent = "Voz predeterminada del sistema";
+        opt.value = "";
+        select.appendChild(opt);
+        return;
+      }
+
+      voiceList.forEach(v => {
+        const opt = document.createElement('option');
+        opt.value = v.voiceURI;
+        opt.textContent = `${v.name} (${v.lang})`;
+        if (appData.selectedVoiceURI && v.voiceURI === appData.selectedVoiceURI) {
+          opt.selected = true;
+        }
+        select.appendChild(opt);
+      });
+
+      if (!appData.selectedVoiceURI && esVoices.length > 0) {
+        const highQuality = esVoices.find(v => !v.name.toLowerCase().includes('espeak')) || esVoices[0];
+        appData.selectedVoiceURI = highQuality.voiceURI;
+        select.value = highQuality.voiceURI;
+      }
+    }
+
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.onvoiceschanged = loadVoices;
+      loadVoices();
+    }
+
+    function changeVoice() {
+      appData.selectedVoiceURI = document.getElementById('voice-select').value;
+      saveData();
+    }
+
+    function getSelectedVoice() {
+      if (!availableVoices.length) availableVoices = window.speechSynthesis.getVoices();
+      if (appData.selectedVoiceURI) {
+        const found = availableVoices.find(v => v.voiceURI === appData.selectedVoiceURI);
+        if (found) return found;
+      }
+      return availableVoices.find(v => v.lang.startsWith('es')) || null;
+    }
+
+    function speak(text) {
+      if (!('speechSynthesis' in window)) return;
+
+      window.speechSynthesis.cancel();
+      const msg = new SpeechSynthesisUtterance(text);
+      const voice = getSelectedVoice();
+
+      if (voice) {
+        msg.voice = voice;
+        msg.lang = voice.lang;
+      } else {
+        msg.lang = 'es-ES';
+      }
+
+      msg.pitch = 1.0;
+      msg.rate = 1.0;
+      window.speechSynthesis.speak(msg);
+    }
+
+    function testVoice() {
+      speak("Preparado para comenzar el entrenamiento");
+    }
+
+    async function keepScreenOn() {
+      try {
+        if ('wakeLock' in navigator) wakeLock = await navigator.wakeLock.request('screen');
+      } catch (e) {}
+    }
+
+    function showHub() {
+      document.getElementById('hub-view').style.display = 'block';
+      document.getElementById('setup-view').style.display = 'none';
+      document.getElementById('active-view').style.display = 'none';
+      renderHub();
+    }
+
+    function showSetup(routineKey) {
+      if (routineKey) appData.selected = routineKey;
+      document.getElementById('hub-view').style.display = 'none';
+      document.getElementById('setup-view').style.display = 'block';
+      document.getElementById('active-view').style.display = 'none';
+      renderSetup();
+    }
+
+    function renderHub() {
+      const container = document.getElementById('hub-list');
+      container.innerHTML = '';
+
+      Object.keys(appData.routines).forEach(key => {
+        const r = appData.routines[key];
+        const item = document.createElement('div');
+        item.className = 'hub-routine-item';
+        item.innerHTML = `
+          <div class="routine-header">
+            <div class="routine-title">${key}</div>
+            <div class="routine-summary">${r.rounds} rondas · ${r.exercises.length} ejercicios</div>
+          </div>
+          <div class="routine-summary">${r.work}s trabajo / ${r.rest}s descanso</div>
+          <div class="hub-btn-grid">
+            <button class="btn-hub-start" onclick="quickStart('${key}')">▶ Iniciar</button>
+            <button class="btn-hub-edit" onclick="showSetup('${key}')">⚙ Editar</button>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function renderSetup() {
+      const r = getCurrentRoutine();
+      document.getElementById('setup-title').textContent = appData.selected;
+      document.getElementById('val-work').textContent = r.work + 's';
+      document.getElementById('val-rest').textContent = r.rest + 's';
+      document.getElementById('val-rounds').textContent = r.rounds;
+      document.getElementById('val-round-rest').textContent = r.roundRest + 's';
+
+      const list = document.getElementById('exercise-list');
+      list.innerHTML = '';
+      r.exercises.forEach((ex, i) => {
+        const item = document.createElement('div');
+        item.className = 'exercise-item';
+        item.innerHTML = `
+          <span class="exercise-name">${i + 1}. ${ex}</span>
+          <div class="exercise-actions">
+            <button class="btn-move" onclick="moveExercise(${i}, -1)" ${i === 0 ? 'disabled' : ''} title="Subir">▲</button>
+            <button class="btn-move" onclick="moveExercise(${i}, 1)" ${i === r.exercises.length - 1 ? 'disabled' : ''} title="Bajar">▼</button>
+            <button class="btn-del" onclick="removeExercise(${i})" title="Eliminar">&times;</button>
+          </div>
+        `;
+        list.appendChild(item);
+      });
+    }
+
+    function moveExercise(index, direction) {
+      const r = getCurrentRoutine();
+      const targetIndex = index + direction;
+      if (targetIndex < 0 || targetIndex >= r.exercises.length) return;
+
+      const item = r.exercises.splice(index, 1)[0];
+      r.exercises.splice(targetIndex, 0, item);
+      saveData();
+      renderSetup();
+    }
+
+    function adjParam(param, delta) {
+      const r = getCurrentRoutine();
+      if (param === 'rounds') {
+        r.rounds = Math.max(1, r.rounds + delta);
+      } else {
+        r[param] = Math.max(5, r[param] + delta);
+      }
+      saveData();
+      renderSetup();
+    }
+
+    function addExercise() {
+      const input = document.getElementById('new-exercise-name');
+      const val = input.value.trim();
+      if (!val) return;
+      getCurrentRoutine().exercises.push(val);
+      input.value = '';
+      saveData();
+      renderSetup();
+    }
+
+    function removeExercise(index) {
+      getCurrentRoutine().exercises.splice(index, 1);
+      saveData();
+      renderSetup();
+    }
+
+    function openNewRoutineModal() {
+      const modal = document.getElementById('modal-new-routine');
+      const input = document.getElementById('input-routine-name');
+      input.value = '';
+      modal.style.display = 'flex';
+      setTimeout(() => input.focus(), 50);
+    }
+
+    function closeNewRoutineModal() {
+      document.getElementById('modal-new-routine').style.display = 'none';
+    }
+
+    function confirmNewRoutine() {
+      const input = document.getElementById('input-routine-name');
+      const name = input.value.trim();
+      if (!name) return;
+      if (appData.routines[name]) {
+        alert("Ya existe una rutina con ese nombre.");
+        return;
+      }
+      appData.routines[name] = {
+        work: 40, rest: 20, rounds: 3, roundRest: 90,
+        exercises: ["Ejercicio 1", "Ejercicio 2"]
+      };
+      appData.selected = name;
+      saveData();
+      closeNewRoutineModal();
+      showSetup(name);
+    }
+
+    function deleteCurrentRoutine() {
+      const keys = Object.keys(appData.routines);
+      if (keys.length <= 1) {
+        alert("Debes tener al menos una rutina guardada.");
+        return;
+      }
+      if (confirm(`¿Seguro que quieres borrar "${appData.selected}"?`)) {
+        delete appData.routines[appData.selected];
+        appData.selected = Object.keys(appData.routines)[0];
+        saveData();
+        showHub();
+      }
+    }
+
+    function quickStart(routineKey) {
+      appData.selected = routineKey;
+      startWorkout();
+    }
+
+    function startWorkout() {
+      const r = getCurrentRoutine();
+      if (r.exercises.length === 0) {
+        alert("Esta rutina no tiene ejercicios. Añade al menos uno antes de empezar.");
+        return;
+      }
+      keepScreenOn();
+      document.getElementById('hub-view').style.display = 'none';
+      document.getElementById('setup-view').style.display = 'none';
+      document.getElementById('active-view').style.display = 'block';
+
+      currentStep = { round: 1, idx: 0, isWork: true, timeLeft: r.work };
+      loadStep();
+    }
+
+    function loadStep() {
+      const r = getCurrentRoutine();
+      const nameEl = document.getElementById('display-name');
+      const timeEl = document.getElementById('display-time');
+      const roundEl = document.getElementById('label-round');
+      const nextEl = document.getElementById('label-next');
+
+      roundEl.textContent = `Ronda: ${currentStep.round} / ${r.rounds}`;
+
+      if (currentStep.isWork) {
+        const exName = r.exercises[currentStep.idx];
+        currentStep.timeLeft = r.work;
+        nameEl.textContent = exName;
+        nameEl.className = 'big-exercise status-work';
+        timeEl.className = 'clock-face status-work';
+        nextEl.textContent = "Luego: Descanso";
+        speak(exName);
+      } else {
+        if (currentStep.idx === r.exercises.length - 1) {
+          if (currentStep.round >= r.rounds) {
+            finishWorkout();
+            return;
+          }
+          currentStep.timeLeft = r.roundRest;
+          nameEl.textContent = "Descanso de ronda";
+          nextEl.textContent = `Luego: ${r.exercises[0]}`;
+          speak("Descanso de ronda");
+        } else {
+          currentStep.timeLeft = r.rest;
+          const nextEx = r.exercises[currentStep.idx + 1];
+          nameEl.textContent = "Descanso";
+          nextEl.textContent = `Luego: ${nextEx}`;
+          speak(`Descanso. Siguiente: ${nextEx}`);
+        }
+        nameEl.className = 'big-exercise status-rest';
+        timeEl.className = 'clock-face status-rest';
+      }
+
+      timeEl.textContent = currentStep.timeLeft;
+      runInterval();
+    }
+
+    function runInterval() {
+      clearInterval(timer);
+      const r = getCurrentRoutine();
+
+      timer = setInterval(() => {
+        currentStep.timeLeft--;
+        document.getElementById('display-time').textContent = currentStep.timeLeft;
+
+        if (currentStep.timeLeft <= 3 && currentStep.timeLeft > 0) {
+          speak(currentStep.timeLeft.toString());
+        }
+
+        if (currentStep.timeLeft <= 0) {
+          clearInterval(timer);
+          if (currentStep.isWork) {
+            currentStep.isWork = false;
+          } else {
+            currentStep.isWork = true;
+            if (currentStep.idx === r.exercises.length - 1) {
+              currentStep.idx = 0;
+              currentStep.round++;
+            } else {
+              currentStep.idx++;
+            }
+          }
+          loadStep();
+        }
+      }, 1000);
+    }
+
+    function finishWorkout() {
+      clearInterval(timer);
+      document.getElementById('display-name').textContent = "¡Completado!";
+      document.getElementById('display-name').className = 'big-exercise status-work';
+      document.getElementById('display-time').textContent = "00";
+      document.getElementById('label-next').textContent = "";
+      speak("Entrenamiento finalizado. Buen trabajo.");
+    }
+
+    function stopWorkout() {
+      clearInterval(timer);
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      if (wakeLock) wakeLock.release();
+      showHub();
+    }
+
+    showHub();
+  </script>
+</body>
+</html>
